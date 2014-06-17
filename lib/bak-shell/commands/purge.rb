@@ -6,10 +6,12 @@ module BakShell
       c.action do |global_options, options, args|
         indexer = Indexer.instance
         targets = Array.new
+        ids = Array.new
 
         if args.empty?
           targets = Dir.glob(File.join(BakShell::BACKUP_DIR, "*"))
           targets.delete(indexer.index_file)
+          ids = indexer.ids
         else
           args.each do |arg|
             target = File.expand_path(arg)
@@ -21,10 +23,12 @@ module BakShell
             next if backup.nil?
 
             targets << File.join(BakShell::BACKUP_DIR, backup.id)
+            ids << backup.id
           end
         end
 
         targets.each { |t| FileUtils.rm_r(t, force: true) }
+        indexer.remove(ids)
       end
     end
   end

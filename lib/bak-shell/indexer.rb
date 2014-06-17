@@ -53,6 +53,14 @@ module BakShell
       @backup = OpenStruct.new(self.backups.last)
     end
 
+    def remove(ids)
+      new_index = self.backups.select { |b| !ids.include?(b[:id]) }
+      new_index.map { |b| b.delete(:persistent) }
+      CSV.open(self.index_file, "wb") do |f|
+        new_index.each { |b| f << b.values }
+      end
+    end
+
     def index_file
       if @index_file.nil?
         @index_file = File.join(BakShell::BACKUP_DIR, "baklist.index")
