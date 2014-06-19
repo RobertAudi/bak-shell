@@ -4,7 +4,7 @@ module BakShell
     arg_name "TARGET"
     command :backup do |c|
       c.desc "Replace latest version of backup (if present). Default: true"
-      c.switch :R, :replace, default: true
+      c.switch :R, :replace, default: true, negatable: false
 
       c.action do |global_options, options, args|
         raise TargetMissingError.new("Target missing") if args.empty?

@@ -4,4 +4,5 @@ module BakShell
   class TooManyTargetsError < BaseError; end
   class InvalidTargetError  < BaseError; end
   class InvalidBackupError  < BaseError; end
+  class InvalidOptionError  < BaseError; end
 end
