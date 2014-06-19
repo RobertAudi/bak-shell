@@ -19,4 +19,3 @@ require_relative "./bak-shell/version"
 require_relative "./bak-shell/exceptions"
 require_relative "./bak-shell/indexer"
 require_relative "./bak-shell/cli"
-

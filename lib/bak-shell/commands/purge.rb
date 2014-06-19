@@ -4,6 +4,8 @@ module BakShell
     arg_name "TARGET"
     command :purge do |c|
       c.action do |global_options, options, args|
+        puts "Purging...".color(:green)
+
         indexer = Indexer.instance
         targets = Array.new
         ids = Array.new
@@ -29,6 +31,8 @@ module BakShell
 
         targets.each { |t| FileUtils.rm_r(t, force: true) }
         indexer.remove(ids)
+
+        puts "Purging complete!".color(:green)
       end
     end
   end

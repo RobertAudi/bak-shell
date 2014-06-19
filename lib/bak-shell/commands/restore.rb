@@ -11,6 +11,8 @@ module BakShell
 
         raise InvalidTargetError.new("No such file or directory: #{target}") unless File.exists?(target)
 
+        puts "Restoring backup...".color(:green)
+
         indexer = Indexer.instance
         backup = indexer.backup_with_target(target)
 
@@ -20,11 +22,12 @@ module BakShell
         base_target = File.basename(target)
         latest_backup_dir = File.join(backup_dir, base_target)
 
-
         temp_bak = "target.bak-#{Time.now.to_f}"
         FileUtils.mv(target, temp_bak)
         FileUtils.cp_r(latest_backup_dir, File.dirname(target))
         FileUtils.rm_r(temp_bak, force: true)
+
+        puts "Backup restored!".color(:green)
       end
     end
   end
