@@ -31,7 +31,7 @@ module BakShell
 
           illegal_error_message = ""
           options.each do |o, v|
-            if illegal_options.has_key?(o) && illegal_options[o] == v
+            if illegal_options.has_key?(o) && illegal_options[o] != v
               illegal_error_message << "The #{command_options[o].map { |k| "`#{k.length > 1 ? "--" : "-"}#{k}`" }.join("/")} option cannot be used if no target is specified\n".color(:red)
             end
           end

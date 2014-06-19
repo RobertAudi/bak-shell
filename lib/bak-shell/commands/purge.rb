@@ -3,6 +3,9 @@ module BakShell
     desc "Remove (specific) backups"
     arg_name "TARGET"
     command :purge do |c|
+      c.desc "Number of backups to keep"
+      c.flag :k, :keep, default: 0, must_match: /\A[1-9][0-9]*\Z/
+
       c.action do |global_options, options, args|
         puts "Purging...".color(:green)
 
@@ -15,6 +18,8 @@ module BakShell
 
           targets = Dir.glob(File.join(BakShell::BACKUP_DIR, "*"))
           targets.delete(indexer.index_file)
+
+
           ids = indexer.ids
         else
           args.each do |arg|
@@ -33,10 +38,19 @@ module BakShell
           end
         end
 
-        backup_count = targets.map { |t| Dir.glob(File.join(t, "*")).count }.inject(:+)
+        keep_count = options[:k].to_i
 
-        targets.each { |t| FileUtils.rm_r(t, force: true) }
-        indexer.remove(ids)
+        if keep_count > 0
+          targets = targets.map { |t| Dir.glob(File.join(t, "*")).reverse.drop(keep_count) }.flatten
+          backup_count = targets.count
+        else
+          backup_count = targets.map { |t| Dir.glob(File.join(t, "*")).count }.inject(:+)
+          indexer.remove(ids)
+        end
+
+        if backup_count > 0
+          targets.each { |t| FileUtils.rm_r(t, force: true) }
+        end
 
         puts "Purging complete! (#{backup_count} backups removed)".color(:green)
       end
