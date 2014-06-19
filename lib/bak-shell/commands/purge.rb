@@ -33,10 +33,12 @@ module BakShell
           end
         end
 
+        backup_count = targets.map { |t| Dir.glob(File.join(t, "*")).count }.inject(:+)
+
         targets.each { |t| FileUtils.rm_r(t, force: true) }
         indexer.remove(ids)
 
-        puts "Purging complete!".color(:green)
+        puts "Purging complete! (#{backup_count} backups removed)".color(:green)
       end
     end
   end
