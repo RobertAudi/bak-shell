@@ -7,11 +7,11 @@ module BakShell
       c.switch :R, :replace, default: true
 
       c.action do |global_options, options, args|
-        raise ArgumentError, "Target missing" if args.empty?
-        raise ArgumentError, "Only one target can be specified" if args.count > 1
+        raise TargetMissingError.new("Target missing") if args.empty?
+        raise TooManyTargetsError.new("Only one target can be specified") if args.count > 1
 
         target = File.expand_path(args.first)
-        raise ArgumentError, "No such file or directory: #{target}" unless File.exists?(target)
+        raise InvalidTargetError.new("No such file or directory: #{target}") unless File.exists?(target)
 
         indexer = Indexer.instance
         backup = indexer.backup_with_target(target) || indexer.add(target)

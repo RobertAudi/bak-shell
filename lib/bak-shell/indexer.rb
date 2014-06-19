@@ -37,7 +37,7 @@ module BakShell
 
     def add(target)
       if self.targets.include?(target)
-        raise ArgumentError, "Attempt to add an existing backup to the index"
+        raise "Attempt to add an existing backup to the index"
       end
 
       begin

@@ -15,7 +15,7 @@ module BakShell
         else
           args.each do |arg|
             target = File.expand_path(arg)
-            raise ArgumentError, "No such file or directory: #{target}" unless File.exists?(target)
+            raise InvalidTargetError.new("No such file or directory: #{target}") unless File.exists?(target)
 
             backup = indexer.backup_with_target(target)
 
