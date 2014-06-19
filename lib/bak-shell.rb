@@ -11,8 +11,7 @@ require "gli"
 require "rainbow/ext/string"
 
 module BakShell
-  # BACKUP_DIR = File.expand_path(File.join(ENV["HOME"], "bak"))
-  BACKUP_DIR = File.expand_path(File.join(ENV["HOME"], "tmp", "bak"))
+  BACKUP_DIR = File.expand_path(File.join(ENV["HOME"], "bak"))
 end
 
 require_relative "./bak-shell/version"
