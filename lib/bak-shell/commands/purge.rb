@@ -11,6 +11,8 @@ module BakShell
         ids = Array.new
 
         if args.empty?
+          raise InvalidBackupError.new("Nothing to purge") if indexer.backups.count == 0
+
           targets = Dir.glob(File.join(BakShell::BACKUP_DIR, "*"))
           targets.delete(indexer.index_file)
           ids = indexer.ids
@@ -21,8 +23,10 @@ module BakShell
 
             backup = indexer.backup_with_target(target)
 
-            # TODO: Show some kind of warning
-            next if backup.nil?
+            if backup.nil?
+              puts"No backup found for file or directory: #{target}".color(:yellow)
+              next
+            end
 
             targets << File.join(BakShell::BACKUP_DIR, backup.id)
             ids << backup.id
