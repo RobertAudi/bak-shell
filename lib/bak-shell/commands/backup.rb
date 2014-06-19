@@ -26,21 +26,26 @@ module BakShell
         end
 
         base_target = File.basename(target)
-        destination = File.join(BakShell::BACKUP_DIR, backup.id, base_target)
+        destination = File.join(BakShell::BACKUP_DIR, backup.id, "#{base_target}.bak-latest-#{Time.now.to_f}")
+        previous_latest = Dir.glob(File.join(backup_dir, "*.bak-latest-*"))
 
-        if File.exists?(destination)
+        if previous_latest.count == 1
+          previous_latest = previous_latest.first
+
           if options[:replace]
-            FileUtils.rm_r(destination, force: true)
+            FileUtils.rm_r(previous_latest, force: true)
 
             puts "Removed old backup".color(:green)
           else
-            FileUtils.mv(destination, "#{destination}.bak-#{Time.now.to_f}")
+            FileUtils.mv(previous_latest, previous_latest.sub(/-latest/, ""))
 
             puts "Versionned old backup".color(:green)
           end
+        elsif previous_latest.count > 1
+          raise "Found more than one backup marked as latest"
         end
 
-        FileUtils.cp_r(target, backup_dir)
+        FileUtils.cp_r(target, destination)
 
         puts "Backup complete!".color(:green)
       end
