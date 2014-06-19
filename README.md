@@ -13,7 +13,9 @@ Installation
 Usage
 -----
 
-TODO: Write usage instructions here
+```
+> bak help
+```
 
 Contributing
 ------------
