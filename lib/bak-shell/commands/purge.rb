@@ -4,7 +4,8 @@ module BakShell
     arg_name "TARGET"
     command :purge do |c|
       c.desc "Number of backups to keep"
-      c.flag :k, :keep, default: 0, must_match: /\A[1-9][0-9]*\Z/
+      c.arg_name "count"
+      c.flag :k, :keep, default_value: 0, must_match: /\A[1-9][0-9]*\Z/
 
       c.action do |global_options, options, args|
         puts "Purging...".color(:green)

@@ -4,7 +4,8 @@ module BakShell
     arg_name "TARGET"
     command :restore do |c|
       c.desc "Index of backup to restore"
-      c.flag :i, :index, default: 1, must_match: /\A[1-9][0-9]*\Z/
+      c.arg_name "index"
+      c.flag :i, :index, default_value: 1, must_match: /\A[1-9][0-9]*\Z/
 
       c.action do |global_options, options, args|
         raise TargetMissingError.new("Target missing") if args.empty?

@@ -4,14 +4,14 @@ module BakShell
     arg_name "TARGET"
     command :info do |c|
       c.desc "Show all backups for a target (Doesn't work if no target is specified!!)"
-      c.switch :a, :all, default: false, negatable: false
+      c.switch :a, :all, default_value: false, negatable: false
 
       c.desc "Show the path to the backup of a target (takes the index of the backup as argument)"
       c.arg_name "index"
       c.flag :p, :path, must_match: /\A[1-9][0-9]*\Z/
 
       c.desc "Show the path to the latest backup of a target (equivalent to `-p 1`)"
-      c.switch :P, :"latest-path", default: false, negatable: false
+      c.switch :P, :"latest-path", default_value: false, negatable: false
 
       c.action do |global_options, options, args|
         raise TooManyTargetsError.new("Only one target can be specified") if args.count > 1
